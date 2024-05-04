@@ -1,0 +1,1 @@
+This folder contains the scripts and files used for creating miRNA and mRNA interaction network by using a software called Cytoscape.

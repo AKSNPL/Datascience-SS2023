@@ -1,0 +1,46 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
+```{r LIBRARIES}
+# Load required libraries
+library(readxl)    # For reading data from Excel files
+library(multiMiR)  # For querying validated miRNA-mRNA interactions
+library(writexl)   # For writing data to Excel files
+```
+
+```{r LOAD DATA}
+# Read data from an Excel file named "miRNAmRNA.xlsx" and store it in the "new_list" variable.
+new_list <- read_excel("C:/Users/Emre/Desktop/miRNAmRNA.xlsx")
+mirnames <- new_list$miRNA
+```
+
+```{r RUN MULTIMIR}
+# Get validated miRNA-mRNA interactions using the "multiMiR" package.
+# In this case, the interactions are queried for human (hsa) miRNAs (mirnames) from the "validated" table.
+# The results will be summarized and stored in the "multimir_results" variable.
+multimir_results <- get_multimir(org     = 'hsa',
+                                 mirna   = mirnames,
+                                 table   = 'validated',
+                                 summary = TRUE)
+```
+
+```{r VIEW HEADER}
+# Display the first few rows of the "multimir_results" data to get an overview of the miRNA-mRNA interactions.
+head(multimir_results@data)
+```
+
+```{r STORE}
+# Extract the results of miRNA-mRNA interactions from the "multimir_results" variable and store them in the "targets" variable.
+targets <- multimir_results@data
+```
+
+```{r EXCEL}
+# Extract the results of miRNA-mRNA interactions from the "multimir_results" variable and store them in the "targets" variable.
+# Specify the Excel file name where the results will be saved.
+excel_file <- "multimir_results.xlsx"
+
+# Write the "targets" data to an Excel file with the specified file name.
+write_xlsx(targets, path = excel_file)
+```
